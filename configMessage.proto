@@ -12,7 +12,7 @@ message CacheStatusRequest {
 }
 
 message CacheStatusReply {
-  string          Exists                      = 1;
+  bool          Exists                      = 1;
   ConfigMessage   message                     = 2;
 }
 
