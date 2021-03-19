@@ -1,0 +1,45 @@
+syntax = "proto3";
+package netwdevpb;
+option go_package = "github.com/netw-device-driver/netwdevpb";
+
+service CacheStatus {
+  rpc Request (CacheStatusRequest) returns (CacheStatusReply) {}
+}
+
+message CacheStatusRequest {
+  string           CacheObject                = 1;
+  int32            Level                      = 2;
+}
+
+message CacheStatusReply {
+  string          Exists                      = 1;
+  ConfigMessage   message                     = 2;
+}
+
+message ConfigMessage {
+  MessageKind     Kind                        = 1;    
+  string          ApiGroup                    = 2;
+  string          Resource                    = 3;
+  string          ResourceName                = 4;
+  string          Namespace                   = 5;
+  int32           Level                       = 6;
+  ActionType      Action                      = 7;
+  string          AggregateActionPath         = 8;
+  bool            AggregateActionPathSuccess  = 9;
+  repeated string IndividualActionPath        = 10;
+  repeated bool   IndividualActionPathSuccess = 11;
+  repeated bytes  ConfigData                  = 12;
+  repeated bytes  StatusData                  = 13;
+  repeated string Dependencies                = 14;
+
+  enum MessageKind {
+    Request   = 0;
+    Response  = 1;
+  }
+
+  enum ActionType {
+      Replace = 0;
+      Update  = 1;
+      Delete  = 2;
+    }
+}
