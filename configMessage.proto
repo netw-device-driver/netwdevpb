@@ -11,7 +11,7 @@ service CacheStatus {
 }
 
 message CacheUpdateRequest {
-  string          Object                      = 1;
+  string          Resource                    = 1;
   int32           Level                       = 2;
   ActionType      Action                      = 3;
   string          AggregateActionPath         = 4;
@@ -33,16 +33,16 @@ message CacheUpdateReply {
 }
 
 message CacheStatusRequest {
-  string          CacheObject                = 1;
+  string          Resource                   = 1;
   int32           Level                      = 2;
 }
 
 message CacheStatusReply {
   bool                Exists                      = 1;
-  CacheStatus         Status                      = 2;
+  CacheResourceStatus Status                      = 2;
   CacheUpdateRequest  Data                        = 3;
 
-  enum CacheStatus {
+  enum CacheResourceStatus {
     // ToBeProcessed -> new data, not processed
 	  ToBeProcessed         = 0;
 	  // UpdateBeingProcessed -> data is merged in the tree
