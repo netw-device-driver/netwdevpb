@@ -11,15 +11,16 @@ service CacheStatus {
 }
 
 message CacheUpdateRequest {
-  int32           Level                       = 1;
-  ActionType      Action                      = 2;
-  string          AggregateActionPath         = 3;
-  bool            AggregateActionPathSuccess  = 4;
-  repeated string IndividualActionPath        = 5;
-  repeated bool   IndividualActionPathSuccess = 6;
-  repeated bytes  ConfigData                  = 7;
-  repeated bytes  StatusData                  = 8;
-  repeated string Dependencies                = 9;
+  string          Object                      = 1;
+  int32           Level                       = 2;
+  ActionType      Action                      = 3;
+  string          AggregateActionPath         = 4;
+  bool            AggregateActionPathSuccess  = 5;
+  repeated string IndividualActionPath        = 6;
+  repeated bool   IndividualActionPathSuccess = 7;
+  repeated bytes  ConfigData                  = 8;
+  repeated bytes  StatusData                  = 9;
+  repeated string Dependencies                = 10;
 
   enum ActionType {
       Replace = 0;
