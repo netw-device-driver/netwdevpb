@@ -2,47 +2,15 @@ syntax = "proto3";
 package netwdevpb;
 option go_package = "github.com/netw-device-driver/netwdevpb";
 
+service CacheUpdate {
+  rpc Update (CacheUpdateRequest) returns (CacheUpdateReply) {}
+}
+
 service CacheStatus {
   rpc Request (CacheStatusRequest) returns (CacheStatusReply) {}
 }
 
-message CacheStatusRequest {
-  string          CacheObject                = 1;
-  int32           Level                      = 2;
-}
-
-message CacheStatusReply {
-  bool            Exists                      = 1;
-  CacheStatus     Status                      = 2;
-  ConfigMessage   message                     = 3;
-
-  enum CacheStatus {
-    // ToBeProcessed -> new data, not processed
-	  ToBeProcessed         = 0;
-	  // UpdateBeingProcessed -> data is merged in the tree
-	  UpdateBeingProcessed  = 1;
-	  // UpdateProcessedSuccess -> data, processed successfully
-	  UpdateProcessedSuccess = 2;
-	  // UpdateProcessedSuccessNatsUpdatePending -> data, processed successfully but nats update is missing
-	  UpdateProcessedSuccessNatsUpdatePending = 3;
-	  // UpdateProcessedFailed -> data, processed unsuccessfully
-	  UpdateProcessedFailed = 4;
-	  // UpdateProcessedFailedNatsUpdatePending -> data, processing Failed but nats update is missing
-	  UpdateProcessedFailedNatsUpdatePending = 5;
-	  // DependencyMissing -> data with missing dependency
-	  DependencyMissing = 6;
-	  // DeletePending -> data with pending gnmi delete
-	  DeletePending = 7;
-	  // DeletePendingWithParentDependency -> data with pending parent gnmi delete
-	  DeletePendingWithParentDependency = 8;
-	  // DeleteWithMissingDependency -> data with No pending gnmi update
-	  DeleteWithMissingDependency = 9;
-	  // UpdatePending -> data with pending update
-	  UpdatePending = 10;
-  }
-}
-
-message ConfigMessage {
+message CacheUpdateRequest {
   MessageKind     Kind                        = 1;    
   string          ApiGroup                    = 2;
   string          Resource                    = 3;
@@ -68,4 +36,43 @@ message ConfigMessage {
       Update  = 1;
       Delete  = 2;
     }
+}
+
+message CacheUpdateReply {
+}
+
+message CacheStatusRequest {
+  string          CacheObject                = 1;
+  int32           Level                      = 2;
+}
+
+message CacheStatusReply {
+  bool                Exists                      = 1;
+  CacheStatus         Status                      = 2;
+  CacheUpdateRequest  Data                        = 3;
+
+  enum CacheStatus {
+    // ToBeProcessed -> new data, not processed
+	  ToBeProcessed         = 0;
+	  // UpdateBeingProcessed -> data is merged in the tree
+	  UpdateBeingProcessed  = 1;
+	  // UpdateProcessedSuccess -> data, processed successfully
+	  UpdateProcessedSuccess = 2;
+	  // UpdateProcessedSuccessNatsUpdatePending -> data, processed successfully but nats update is missing
+	  UpdateProcessedSuccessNatsUpdatePending = 3;
+	  // UpdateProcessedFailed -> data, processed unsuccessfully
+	  UpdateProcessedFailed = 4;
+	  // UpdateProcessedFailedNatsUpdatePending -> data, processing Failed but nats update is missing
+	  UpdateProcessedFailedNatsUpdatePending = 5;
+	  // DependencyMissing -> data with missing dependency
+	  DependencyMissing = 6;
+	  // DeletePending -> data with pending gnmi delete
+	  DeletePending = 7;
+	  // DeletePendingWithParentDependency -> data with pending parent gnmi delete
+	  DeletePendingWithParentDependency = 8;
+	  // DeleteWithMissingDependency -> data with No pending gnmi update
+	  DeleteWithMissingDependency = 9;
+	  // UpdatePending -> data with pending update
+	  UpdatePending = 10;
+  }
 }
