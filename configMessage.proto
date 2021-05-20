@@ -21,6 +21,7 @@ message CacheUpdateRequest {
   repeated bytes  ConfigData                  = 8;
   repeated bytes  StatusData                  = 9;
   repeated string Dependencies                = 10;
+  repeated string LeafRefDependencies         = 11;
 
   enum ActionType {
       Replace = 0;
@@ -43,27 +44,32 @@ message CacheStatusReply {
   CacheUpdateRequest  Data                        = 3;
 
   enum CacheResourceStatus {
+    // None -> no status, object does not exist
+    None = 0;
     // ToBeProcessed -> new data, not processed
-	  ToBeProcessed         = 0;
+	  ToBeProcessed         = 1;
 	  // UpdateBeingProcessed -> data is merged in the tree
-	  UpdateBeingProcessed  = 1;
+	  UpdateBeingProcessed  = 2;
 	  // UpdateProcessedSuccess -> data, processed successfully
-	  UpdateProcessedSuccess = 2;
+	  UpdateProcessedSuccess = 3;
 	  // UpdateProcessedSuccessNatsUpdatePending -> data, processed successfully but nats update is missing
-	  UpdateProcessedSuccessNatsUpdatePending = 3;
+	  UpdateProcessedSuccessNatsUpdatePending = 4;
 	  // UpdateProcessedFailed -> data, processed unsuccessfully
-	  UpdateProcessedFailed = 4;
+	  UpdateProcessedFailed = 5;
 	  // UpdateProcessedFailedNatsUpdatePending -> data, processing Failed but nats update is missing
-	  UpdateProcessedFailedNatsUpdatePending = 5;
+	  UpdateProcessedFailedNatsUpdatePending = 6;
 	  // DependencyMissing -> data with missing dependency
-	  DependencyMissing = 6;
+	  DependencyMissing = 7;
+    // LeafRefDependency -> data with leafref dependency cannot delete
+	  LeafRefDependency = 8;
 	  // DeletePending -> data with pending gnmi delete
-	  DeletePending = 7;
+	  DeletePending = 9;
 	  // DeletePendingWithParentDependency -> data with pending parent gnmi delete
-	  DeletePendingWithParentDependency = 8;
+	  DeletePendingWithParentDependency = 10;
 	  // DeleteWithMissingDependency -> data with No pending gnmi update
-	  DeleteWithMissingDependency = 9;
+	  DeleteWithMissingDependency = 11;
 	  // UpdatePending -> data with pending update
-	  UpdatePending = 10;
+	  UpdatePending = 12;
+    
   }
 }
