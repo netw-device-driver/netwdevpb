@@ -73,3 +73,21 @@ message CacheStatusReply {
     
   }
 }
+
+service Deviation {
+  rpc Update (DeviationUpdate) returns (DeviationUpdateReply) {}
+}
+
+message DeviationUpdate {
+  string          Resource                    = 1;
+  ActionType      Action                      = 2;
+
+  enum ActionType {
+    Replace = 0;
+    Update  = 1;
+    Delete  = 2;
+  }
+}
+
+message DeviationUpdateReply {
+}
