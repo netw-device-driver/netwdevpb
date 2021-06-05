@@ -186,86 +186,86 @@ var CacheStatus_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "configMessage.proto",
 }
 
-// DeviationClient is the client API for Deviation service.
+// DeviationUpdateClient is the client API for DeviationUpdate service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type DeviationClient interface {
-	Update(ctx context.Context, in *DeviationUpdate, opts ...grpc.CallOption) (*DeviationUpdateReply, error)
+type DeviationUpdateClient interface {
+	Update(ctx context.Context, in *DeviationUpdateRequest, opts ...grpc.CallOption) (*DeviationUpdateReply, error)
 }
 
-type deviationClient struct {
+type deviationUpdateClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewDeviationClient(cc grpc.ClientConnInterface) DeviationClient {
-	return &deviationClient{cc}
+func NewDeviationUpdateClient(cc grpc.ClientConnInterface) DeviationUpdateClient {
+	return &deviationUpdateClient{cc}
 }
 
-func (c *deviationClient) Update(ctx context.Context, in *DeviationUpdate, opts ...grpc.CallOption) (*DeviationUpdateReply, error) {
+func (c *deviationUpdateClient) Update(ctx context.Context, in *DeviationUpdateRequest, opts ...grpc.CallOption) (*DeviationUpdateReply, error) {
 	out := new(DeviationUpdateReply)
-	err := c.cc.Invoke(ctx, "/netwdevpb.Deviation/Update", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/netwdevpb.DeviationUpdate/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// DeviationServer is the server API for Deviation service.
-// All implementations must embed UnimplementedDeviationServer
+// DeviationUpdateServer is the server API for DeviationUpdate service.
+// All implementations must embed UnimplementedDeviationUpdateServer
 // for forward compatibility
-type DeviationServer interface {
-	Update(context.Context, *DeviationUpdate) (*DeviationUpdateReply, error)
-	mustEmbedUnimplementedDeviationServer()
+type DeviationUpdateServer interface {
+	Update(context.Context, *DeviationUpdateRequest) (*DeviationUpdateReply, error)
+	mustEmbedUnimplementedDeviationUpdateServer()
 }
 
-// UnimplementedDeviationServer must be embedded to have forward compatible implementations.
-type UnimplementedDeviationServer struct {
+// UnimplementedDeviationUpdateServer must be embedded to have forward compatible implementations.
+type UnimplementedDeviationUpdateServer struct {
 }
 
-func (UnimplementedDeviationServer) Update(context.Context, *DeviationUpdate) (*DeviationUpdateReply, error) {
+func (UnimplementedDeviationUpdateServer) Update(context.Context, *DeviationUpdateRequest) (*DeviationUpdateReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedDeviationServer) mustEmbedUnimplementedDeviationServer() {}
+func (UnimplementedDeviationUpdateServer) mustEmbedUnimplementedDeviationUpdateServer() {}
 
-// UnsafeDeviationServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to DeviationServer will
+// UnsafeDeviationUpdateServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DeviationUpdateServer will
 // result in compilation errors.
-type UnsafeDeviationServer interface {
-	mustEmbedUnimplementedDeviationServer()
+type UnsafeDeviationUpdateServer interface {
+	mustEmbedUnimplementedDeviationUpdateServer()
 }
 
-func RegisterDeviationServer(s grpc.ServiceRegistrar, srv DeviationServer) {
-	s.RegisterService(&Deviation_ServiceDesc, srv)
+func RegisterDeviationUpdateServer(s grpc.ServiceRegistrar, srv DeviationUpdateServer) {
+	s.RegisterService(&DeviationUpdate_ServiceDesc, srv)
 }
 
-func _Deviation_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeviationUpdate)
+func _DeviationUpdate_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeviationUpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DeviationServer).Update(ctx, in)
+		return srv.(DeviationUpdateServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/netwdevpb.Deviation/Update",
+		FullMethod: "/netwdevpb.DeviationUpdate/Update",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DeviationServer).Update(ctx, req.(*DeviationUpdate))
+		return srv.(DeviationUpdateServer).Update(ctx, req.(*DeviationUpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Deviation_ServiceDesc is the grpc.ServiceDesc for Deviation service.
+// DeviationUpdate_ServiceDesc is the grpc.ServiceDesc for DeviationUpdate service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Deviation_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "netwdevpb.Deviation",
-	HandlerType: (*DeviationServer)(nil),
+var DeviationUpdate_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "netwdevpb.DeviationUpdate",
+	HandlerType: (*DeviationUpdateServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Update",
-			Handler:    _Deviation_Update_Handler,
+			Handler:    _DeviationUpdate_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

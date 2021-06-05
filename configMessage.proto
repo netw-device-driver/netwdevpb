@@ -1,6 +1,8 @@
 syntax = "proto3";
 package netwdevpb;
+//import "github.com/openconfig/gnmi/proto/gnmi/gnmi.proto";
 option go_package = "github.com/netw-device-driver/netwdevpb";
+
 
 service CacheUpdate {
   rpc Update (CacheUpdateRequest) returns (CacheUpdateReply) {}
@@ -24,9 +26,9 @@ message CacheUpdateRequest {
   repeated string LeafRefDependencies         = 11;
 
   enum ActionType {
-      Replace = 0;
-      Update  = 1;
-      Delete  = 2;
+      ActionReplace                           = 0;
+      ActionUpdate                            = 1;
+      ActionDelete                            = 2;
     }
 }
 
@@ -39,55 +41,67 @@ message CacheStatusRequest {
 }
 
 message CacheStatusReply {
-  bool                Exists                      = 1;
-  CacheResourceStatus Status                      = 2;
-  CacheUpdateRequest  Data                        = 3;
+  bool                Exists                 = 1;
+  CacheResourceStatus Status                 = 2;
+  CacheUpdateRequest  Data                   = 3;
 
   enum CacheResourceStatus {
     // None -> no status, object does not exist
-    None = 0;
+    CacheResourceStatusNone = 0;
     // ToBeProcessed -> new data, not processed
-	  ToBeProcessed         = 1;
+	  CacheResourceStatusToBeProcessed         = 1;
 	  // UpdateBeingProcessed -> data is merged in the tree
-	  UpdateBeingProcessed  = 2;
+	  CacheResourceStatusUpdateBeingProcessed  = 2;
 	  // UpdateProcessedSuccess -> data, processed successfully
-	  UpdateProcessedSuccess = 3;
+	  CacheResourceStatusUpdateProcessedSuccess = 3;
 	  // UpdateProcessedSuccessNatsUpdatePending -> data, processed successfully but nats update is missing
-	  UpdateProcessedSuccessNatsUpdatePending = 4;
+	  CacheResourceStatusUpdateProcessedSuccessNatsUpdatePending = 4;
 	  // UpdateProcessedFailed -> data, processed unsuccessfully
-	  UpdateProcessedFailed = 5;
+	  CacheResourceStatusUpdateProcessedFailed = 5;
 	  // UpdateProcessedFailedNatsUpdatePending -> data, processing Failed but nats update is missing
-	  UpdateProcessedFailedNatsUpdatePending = 6;
+	  CacheResourceStatusUpdateProcessedFailedNatsUpdatePending = 6;
 	  // DependencyMissing -> data with missing dependency
-	  DependencyMissing = 7;
+	  CacheResourceStatusDependencyMissing = 7;
     // LeafRefDependency -> data with leafref dependency cannot delete
-	  LeafRefDependency = 8;
+	  CacheResourceStatusLeafRefDependency = 8;
 	  // DeletePending -> data with pending gnmi delete
-	  DeletePending = 9;
+	  CacheResourceStatusDeletePending = 9;
 	  // DeletePendingWithParentDependency -> data with pending parent gnmi delete
-	  DeletePendingWithParentDependency = 10;
+	  CacheResourceStatusDeletePendingWithParentDependency = 10;
 	  // DeleteWithMissingDependency -> data with No pending gnmi update
-	  DeleteWithMissingDependency = 11;
+	  CacheResourceStatusDeleteWithMissingDependency = 11;
 	  // UpdatePending -> data with pending update
-	  UpdatePending = 12;
+	  CacheResourceStatusUpdatePending = 12;
     
   }
 }
 
-service Deviation {
-  rpc Update (DeviationUpdate) returns (DeviationUpdateReply) {}
+service DeviationUpdate {
+  rpc Update (DeviationUpdateRequest) returns (DeviationUpdateReply) {}
 }
 
-message DeviationUpdate {
-  string          Resource                    = 1;
-  ActionType      Action                      = 2;
-
-  enum ActionType {
-    Replace = 0;
-    Update  = 1;
-    Delete  = 2;
-  }
+message DeviationUpdateRequest {
+  repeated Deviation Deviation           = 1;
 }
 
 message DeviationUpdateReply {
+}
+
+message Deviation {
+  OnChangeAction      OnChange           = 1;
+  string              Xpath              = 2;
+  repeated bytes      Value              = 3; 
+  DeviationAction     DevationResult     = 4;
+
+  enum OnChangeAction {
+    OnChangeActionUpdate                 = 0;
+    OnChangeActionDelete                 = 1;
+  }
+
+  enum DeviationAction {
+    DeviationActionIgnore                = 0;
+    DeviationActionReApplyCache          = 1;
+    DeviationActionDelete                = 2;
+    DeviationActionDeleteIgnoredByParent = 3;
+  }
 }
