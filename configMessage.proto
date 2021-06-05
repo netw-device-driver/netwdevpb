@@ -90,7 +90,7 @@ message DeviationUpdateReply {
 message Deviation {
   OnChangeAction      OnChange           = 1;
   string              Xpath              = 2;
-  repeated bytes      Value              = 3; 
+  bytes               Value              = 3; 
   DeviationAction     DevationResult     = 4;
 
   enum OnChangeAction {
