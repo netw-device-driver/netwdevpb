@@ -81,7 +81,7 @@ service DeviationUpdate {
 }
 
 message DeviationUpdateRequest {
-  repeated Deviation Deviation           = 1;
+  repeated Deviation Deviations           = 1;
 }
 
 message DeviationUpdateReply {
