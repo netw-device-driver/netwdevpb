@@ -103,5 +103,6 @@ message Deviation {
     DeviationActionReApplyCache          = 1;
     DeviationActionDelete                = 2;
     DeviationActionDeleteIgnoredByParent = 3;
+    DeviationActionIgnoreException       = 4;
   }
 }
