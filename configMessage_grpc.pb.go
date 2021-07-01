@@ -271,3 +271,89 @@ var DeviationUpdate_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "configMessage.proto",
 }
+
+// SubscriptionUpdateClient is the client API for SubscriptionUpdate service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type SubscriptionUpdateClient interface {
+	Update(ctx context.Context, in *SubscriptionUpdateRequest, opts ...grpc.CallOption) (*SubscriptionUpdateReply, error)
+}
+
+type subscriptionUpdateClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSubscriptionUpdateClient(cc grpc.ClientConnInterface) SubscriptionUpdateClient {
+	return &subscriptionUpdateClient{cc}
+}
+
+func (c *subscriptionUpdateClient) Update(ctx context.Context, in *SubscriptionUpdateRequest, opts ...grpc.CallOption) (*SubscriptionUpdateReply, error) {
+	out := new(SubscriptionUpdateReply)
+	err := c.cc.Invoke(ctx, "/netwdevpb.SubscriptionUpdate/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SubscriptionUpdateServer is the server API for SubscriptionUpdate service.
+// All implementations must embed UnimplementedSubscriptionUpdateServer
+// for forward compatibility
+type SubscriptionUpdateServer interface {
+	Update(context.Context, *SubscriptionUpdateRequest) (*SubscriptionUpdateReply, error)
+	mustEmbedUnimplementedSubscriptionUpdateServer()
+}
+
+// UnimplementedSubscriptionUpdateServer must be embedded to have forward compatible implementations.
+type UnimplementedSubscriptionUpdateServer struct {
+}
+
+func (UnimplementedSubscriptionUpdateServer) Update(context.Context, *SubscriptionUpdateRequest) (*SubscriptionUpdateReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedSubscriptionUpdateServer) mustEmbedUnimplementedSubscriptionUpdateServer() {}
+
+// UnsafeSubscriptionUpdateServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SubscriptionUpdateServer will
+// result in compilation errors.
+type UnsafeSubscriptionUpdateServer interface {
+	mustEmbedUnimplementedSubscriptionUpdateServer()
+}
+
+func RegisterSubscriptionUpdateServer(s grpc.ServiceRegistrar, srv SubscriptionUpdateServer) {
+	s.RegisterService(&SubscriptionUpdate_ServiceDesc, srv)
+}
+
+func _SubscriptionUpdate_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubscriptionUpdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionUpdateServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/netwdevpb.SubscriptionUpdate/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionUpdateServer).Update(ctx, req.(*SubscriptionUpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SubscriptionUpdate_ServiceDesc is the grpc.ServiceDesc for SubscriptionUpdate service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SubscriptionUpdate_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "netwdevpb.SubscriptionUpdate",
+	HandlerType: (*SubscriptionUpdateServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Update",
+			Handler:    _SubscriptionUpdate_Update_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "configMessage.proto",
+}

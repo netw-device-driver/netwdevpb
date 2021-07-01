@@ -106,3 +106,16 @@ message Deviation {
     DeviationActionIgnoreException       = 4;
   }
 }
+
+service SubscriptionUpdate {
+  rpc Update (SubscriptionUpdateRequest) returns (SubscriptionUpdateReply) {}
+}
+
+message SubscriptionUpdateRequest {
+  repeated string Subscriptions          = 1;
+  repeated string ExcpetionPaths         = 2;
+  repeated string ExplicitExceptionPaths = 3;
+}
+
+message SubscriptionUpdateReply {
+}
