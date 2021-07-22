@@ -107,15 +107,17 @@ message Deviation {
   }
 }
 
-service SubscriptionUpdate {
-  rpc Update (SubscriptionUpdateRequest) returns (SubscriptionUpdateReply) {}
+service Registration {
+  rpc Register (RegistrationRequest) returns (RegistrationReply) {}
 }
 
-message SubscriptionUpdateRequest {
-  repeated string Subscriptions          = 1;
-  repeated string ExcpetionPaths         = 2;
-  repeated string ExplicitExceptionPaths = 3;
+message RegistrationRequest {
+  string          DeviceKind             = 1;
+  string          DeviceMatch            = 2;
+  repeated string Subscriptions          = 3;
+  repeated string ExcpetionPaths         = 4;
+  repeated string ExplicitExceptionPaths = 5;
 }
 
-message SubscriptionUpdateReply {
+message RegistrationReply {
 }
