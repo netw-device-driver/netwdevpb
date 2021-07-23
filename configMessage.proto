@@ -109,6 +109,8 @@ message Deviation {
 
 service Registration {
   rpc Register (RegistrationRequest) returns (RegistrationReply) {}
+
+  rpc DeRegister (RegistrationRequest) returns (RegistrationReply) {}
 }
 
 message RegistrationRequest {
