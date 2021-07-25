@@ -114,8 +114,8 @@ service Registration {
 }
 
 message RegistrationRequest {
-  string          DeviceKind             = 1;
-  string          DeviceMatch            = 2;
+  string          DeviceType             = 1;
+  string          MatchString            = 2;
   repeated string Subscriptions          = 3;
   repeated string ExcpetionPaths         = 4;
   repeated string ExplicitExceptionPaths = 5;
